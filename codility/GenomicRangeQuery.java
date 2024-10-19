@@ -138,12 +138,11 @@ public class GenomicRangeQuery {
 
     // running the queries
     int[] output = new int[P.length];
-    int outputCursor = 0;
     for (int i = 0; i < P.length; i++) {
-      if (firstAToTheLeft[Q[i]] >= P[i]) output[outputCursor++] = 1;
-      else if (firstCToTheLeft[Q[i]] >= P[i]) output[outputCursor++] = 2;
-      else if (firstGToTheLeft[Q[i]] >= P[i]) output[outputCursor++] = 3;
-      else output[outputCursor++] = 4;
+      if (firstAToTheLeft[Q[i]] >= P[i]) output[i] = 1;
+      else if (firstCToTheLeft[Q[i]] >= P[i]) output[i] = 2;
+      else if (firstGToTheLeft[Q[i]] >= P[i]) output[i] = 3;
+      else output[i] = 4;
     }
     return output;
   }
