@@ -1,0 +1,7 @@
+- I didn't use proper object oriented programming best practices
+  - (The code in this repository is not the code I produced during the interview)
+  - (I wasn't expecting this type of interview and I didn't practice that in Python)
+  - From now on I'll be using Java in all interviews because from my experience all companies (big tech or not)
+    will have at least one interview that is more related to OOP best practices than algorithms and data structures
+- Bugs I didn't catch
+- I didn't finish the coding challenge on time
