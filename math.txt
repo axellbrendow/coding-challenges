@@ -1,3 +1,9 @@
+Render formulas in ASCII art:
+https://diagon.arthursonzogni.com/#Math
+https://math.stackexchange.com/a/2804782
+
+---
+
 Permutations vs arrangements vs combinations
 
 Permutation: arrangements of elements in a specific order
