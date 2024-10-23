@@ -52,7 +52,7 @@ Optimized solution:
 time: O(N)
 
 This question seems to come from Mathematical Olympiads or Competitive Programming. It requires you to prove
-that if you divide and array into two subarrays, one of them will have an average <= the original array.
+that if you divide an array into two subarrays, one of them will have an average <= the original array.
 
 http://disq.us/p/1bcgo23
 https://github.com/daotranminh/playground/blob/master/src/codibility/MinAvgTwoSlice/proof.pdf
