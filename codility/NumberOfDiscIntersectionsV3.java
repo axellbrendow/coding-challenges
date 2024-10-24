@@ -40,52 +40,44 @@ each element of array A is an integer within the range [0..2,147,483,647].
 ---
 
 A[1] = 5 (-4, 6)
-A[0] = 1 (-1, 1)
+A[0] = 1 (-1, 1) i
 A[2] = 2 (0, 4)
 A[4] = 4 (0, 8)
 A[3] = 1 (2, 4)
-A[5] = 0 (5, 5)
+A[5] = 0 (5, 5) j
 
 5 + 2 + 2 + 2 = 11
 
--3 3
-2 6
+https://www.youtube.com/watch?v=HV8tzIiidSw&pp=ygUZTnVtYmVyT2ZEaXNjSW50ZXJzZWN0aW9ucw%3D%3D
 
-TIMEOUT ERROR
+sorted:
+start[] = -4 -1 +0 +0 +2 +5
+end[]   = +1 +4 +4 +5 +6 +8
+
+      o        c  c
+o  o  o  c  o  c  o  c  c
+-4 -1 +0 +1 +2 +4 +5 +6 +8
 */
 
-public class NumberOfDiscIntersectionsV1 {
-  private static class Circle {
-    public long start;
-    public long end;
-
-    public Circle(long start, long end) {
-      this.start = start;
-      this.end = end;
-    }
-  }
-
+public class NumberOfDiscIntersectionsV3 {
   public static int solution(int[] A) {
-    List<Circle> circles = new ArrayList<>();
+    long[] start = new long[A.length];
+    long[] end = new long[A.length];
     for (int i = 0; i < A.length; i++) {
-      circles.add(new Circle((long) i - A[i], (long) i + A[i]));
+      start[i] = (long) i - A[i];
+      end[i] = (long) i + A[i]; // converts i to long before adding
     }
-    circles.sort((circle1, circle2) -> {
-      if (circle1.start < circle2.start || (circle1.start == circle2.start && circle1.end <= circle2.end))
-        return -1;
-      return 1;
-    });
+    Arrays.sort(start);
+    Arrays.sort(end);
 
-    int pairs = 0;
-    for (int i = 0; i < A.length; i++) {
-      Circle leftCircle = circles.get(i);
-      for (int j = i + 1; j < A.length; j++) {
-        Circle rightCircle = circles.get(j);
-        if (leftCircle.end >= rightCircle.start) pairs++;
-        else break;
-
+    int pairs = 0, open = 0, i = 0;
+    for (int j = 0; j < A.length; j++) {
+      while (i < A.length && start[i] <= end[j]) {
+        pairs += open++;
         if (pairs > 10_000_000) return -1;
+        i++;
       }
+      open--;
     }
     return pairs;
   }

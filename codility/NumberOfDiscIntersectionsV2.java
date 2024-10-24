@@ -50,40 +50,16 @@ A[5] = 0 (5, 5)
 
 -3 3
 2 6
-
-TIMEOUT ERROR
 */
 
-public class NumberOfDiscIntersectionsV1 {
-  private static class Circle {
-    public long start;
-    public long end;
-
-    public Circle(long start, long end) {
-      this.start = start;
-      this.end = end;
-    }
-  }
-
+public class NumberOfDiscIntersectionsV2 {
   public static int solution(int[] A) {
-    List<Circle> circles = new ArrayList<>();
-    for (int i = 0; i < A.length; i++) {
-      circles.add(new Circle((long) i - A[i], (long) i + A[i]));
-    }
-    circles.sort((circle1, circle2) -> {
-      if (circle1.start < circle2.start || (circle1.start == circle2.start && circle1.end <= circle2.end))
-        return -1;
-      return 1;
-    });
-
     int pairs = 0;
     for (int i = 0; i < A.length; i++) {
-      Circle leftCircle = circles.get(i);
+      long circleIEnd = i + A[i];
       for (int j = i + 1; j < A.length; j++) {
-        Circle rightCircle = circles.get(j);
-        if (leftCircle.end >= rightCircle.start) pairs++;
-        else break;
-
+        long circleJStart = j - A[j];
+        if (circleIEnd >= circleJStart) pairs++;
         if (pairs > 10_000_000) return -1;
       }
     }
