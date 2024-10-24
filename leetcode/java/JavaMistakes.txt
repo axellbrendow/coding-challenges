@@ -26,3 +26,14 @@ int i = 0;
 arr[i] = i = 30;
 That's valid, and doesn't produce ArrayIndexOutOfBoundsException. Java replaces the i before evaluation.
 That's equivalent to: arr[i] = (i = 30)
+
+If you run this code:
+long a = Integer.MAX_VALUE + 1;
+a ==> -2147483648
+
+The correct way is to convert one of the values to long
+long a = Integer.MAX_VALUE + 1L;
+a ==> 2147483648
+
+Using List.sort((a, b) -> a - b) when a and b are longs. In this scenario, you need to make comparisons rather
+than additions or subtractions.
