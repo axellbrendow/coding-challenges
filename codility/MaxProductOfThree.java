@@ -3,6 +3,8 @@ package codility;
 import java.util.*;
 
 /*-
+https://app.codility.com/programmers/lessons/6-sorting/max_product_of_three/
+
 A non-empty array A consisting of N integers is given. The product of triplet (P, Q, R) equates to
 A[P] * A[Q] * A[R] (0 ≤ P < Q < R < N).
 

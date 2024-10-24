@@ -3,6 +3,8 @@ package codility;
 import java.util.*;
 
 /*-
+https://app.codility.com/programmers/lessons/6-sorting/number_of_disc_intersections/
+
 We draw N discs on a plane. The discs are numbered from 0 to N − 1. An array A of N non-negative integers,
 specifying the radiuses of the discs, is given. The J-th disc is drawn with its center at (J, 0) and radius A[J].
 

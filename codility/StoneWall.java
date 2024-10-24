@@ -3,6 +3,8 @@ package codility;
 import java.util.*;
 
 /*-
+https://app.codility.com/programmers/lessons/7-stacks_and_queues/stone_wall/
+
 You are going to build a stone wall. The wall should be straight and N meters long, and its thickness should
 be constant; however, it should have different heights in different places. The height of the wall is specified
 by an array H of N positive integers. H[I] is the height of the wall from I to I+1 meters to the right of its
