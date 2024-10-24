@@ -22,7 +22,7 @@ r r r (ok)
 -1 1 1 -> (l, r, r)
 */
 
-public class MaxProductOfTree {
+public class MaxProductOfThree {
   public static int solution(int[] A) {
     Arrays.sort(A);
     return Math.max(
