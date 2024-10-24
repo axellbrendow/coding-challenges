@@ -40,28 +40,44 @@ each element of array A is an integer within the range [0..2,147,483,647].
 ---
 
 A[1] = 5 (-4, 6)
-A[0] = 1 (-1, 1)
+A[0] = 1 (-1, 1) i
 A[2] = 2 (0, 4)
 A[4] = 4 (0, 8)
 A[3] = 1 (2, 4)
-A[5] = 0 (5, 5)
+A[5] = 0 (5, 5) j
 
 5 + 2 + 2 + 2 = 11
 
--3 3
-2 6
+https://www.youtube.com/watch?v=HV8tzIiidSw&pp=ygUZTnVtYmVyT2ZEaXNjSW50ZXJzZWN0aW9ucw%3D%3D
+
+sorted:
+start[] = -4 -1 +0 +0 +2 +5
+end[]   = +1 +4 +4 +5 +6 +8
+
+      o        c  c
+o  o  o  c  o  c  o  c  c
+-4 -1 +0 +1 +2 +4 +5 +6 +8
 */
 
 public class NumberOfDiscIntersectionsV2 {
   public static int solution(int[] A) {
-    int pairs = 0;
+    long[] start = new long[A.length];
+    long[] end = new long[A.length];
     for (int i = 0; i < A.length; i++) {
-      long circleIEnd = i + A[i];
-      for (int j = i + 1; j < A.length; j++) {
-        long circleJStart = j - A[j];
-        if (circleIEnd >= circleJStart) pairs++;
+      start[i] = (long) i - A[i];
+      end[i] = (long) i + A[i]; // converts i to long before adding
+    }
+    Arrays.sort(start);
+    Arrays.sort(end);
+
+    int pairs = 0, open = 0, i = 0;
+    for (int j = 0; j < A.length; j++) {
+      while (i < A.length && start[i] <= end[j]) {
+        pairs += open++;
         if (pairs > 10_000_000) return -1;
+        i++;
       }
+      open--;
     }
     return pairs;
   }
