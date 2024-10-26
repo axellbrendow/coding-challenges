@@ -86,22 +86,10 @@ class MinMaxDivisionV1 {
         int mid = left + (right - left) / 2;
         int leftSum = prefixSum[mid] - prefixSum[originalLeft - 1];
         int rightSum = prefixSum[originalRight] - prefixSum[mid];
-        if (leftSum == rightSum) {
-          minLargeSum = Math.min(minLargeSum, Math.max(prefixSum[i], leftSum));
-          break;
-        } else if (leftSum < rightSum) {
-          minLargeSum = Math.min(
-            minLargeSum,
-            Math.max(prefixSum[i], Math.max(leftSum, rightSum))
-          );
-          left = mid + 1;
-        } else {
-          minLargeSum = Math.min(
-            minLargeSum,
-            Math.max(prefixSum[i], Math.max(leftSum, rightSum))
-          );
-          right = mid - 1;
-        }
+        minLargeSum = Math.min(minLargeSum, Math.max(prefixSum[i], Math.max(leftSum, rightSum)));
+        if (leftSum == rightSum) break;
+        else if (leftSum < rightSum) left = mid + 1;
+        else right = mid - 1;
       }
     }
     return minLargeSum;
