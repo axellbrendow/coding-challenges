@@ -4,6 +4,7 @@ import java.util.*;
 
 /*-
 https://app.codility.com/programmers/lessons/14-binary_search_algorithm/min_max_division/
+https://www.youtube.com/watch?v=0sU_XAaoaEM&ab_channel=kination
 
 You are given integers K, M and a non-empty array A consisting of N integers. Every element of the array is
 not greater than M.
@@ -60,41 +61,57 @@ each element of array A is an integer within the range [0..M].
 K : num of blocks
 M : max value
 
-K = 2 M = 10 A = [1] -> 1
-K = 3 M = 10 A = [1] -> 1
-K = 100_000 M = 10 A = [1] -> 1
+As the question says "Every element of the array should belong to some block.", the minimal large sum is at least
+the biggest element in the array and at most the sum of the entire array (e.g. K = 1). Basically we need to find
+a value that splits the array into K blocks successfully.
 
-2, 1|, 5, 1,| 2, 2, 2
-2, 3,| 8, 9, | 11, 13, 15
+2 1 5 1 2 2 2
+5 <= minimal large sum <= 15
 
-2  1  8  3  9  9  9  9
-2  3  11 14| 23 32| 41 50
-27
-21
-18
+If K = 3 and we try minimalLargeSum = 5, we'll get 4 divisions -> 2 1 | 5 | 1 2 2 | 2
+If K = 3 and we try minimalLargeSum = 15, we'll get 0 divisions -> 2 1 5 1 2 2 2
+If K = 3 and we try minimalLargeSum = 10, we'll get 2 divisions -> 2 1 5 1 | 2 2 2
 
-This code is wrong and only works for K = 3. But I liked the code anyway and I'll keep it.
+Basically after trying minimalLargeSum = 10 we know any value greater than 10 will not be valid, that's where
+binary search shines
+
+---
+
+5 3
+5 <= minimal large sum <= 8
+
+If K = 3, It's impossible to divide this array into 3 blocks with at least 1 element, so, in this case, any
+number of divisions < 3 is acceptable because we can imagine that all other divisions will be starting and
+ending after the last index of the array.
+
+If K = 3 and we try minimalLargeSum = 6, we'll get 2 divisions -> 5 | 3 (note that this is a valid solution !!)
 */
 
-class MinMaxDivisionV1 {
+class MinMaxDivisionV2 {
   public static int solution(int K, int M, int[] A) {
-    int[] prefixSum = new int[A.length];
-    prefixSum[0] = A[0];
-    for (int i = 1; i < A.length; i++) prefixSum[i] = prefixSum[i - 1] + A[i];
+    int maxValue = A[0], sum = 0;
+    for (int value : A) {
+      maxValue = Math.max(maxValue, value);
+      sum += value;
+    }
 
-    int minLargeSum = Integer.MAX_VALUE;
-    for (int i = 0; i < A.length; i++) {
-      int originalLeft = i + 1, originalRight = A.length - 1;
-      int left = i + 1, right = A.length - 1;
-      while (left <= right) {
-        int mid = left + (right - left) / 2;
-        int leftSum = prefixSum[mid] - prefixSum[originalLeft - 1];
-        int rightSum = prefixSum[originalRight] - prefixSum[mid];
-        minLargeSum = Math.min(minLargeSum, Math.max(prefixSum[i], Math.max(leftSum, rightSum)));
-        if (leftSum == rightSum) break;
-        else if (leftSum < rightSum) left = mid + 1;
-        else right = mid - 1;
+    int minLargeSum = sum, left = maxValue, right = sum;
+    while (left <= right) {
+      int mid = left + (right - left) / 2;
+      int splits = 1, currSum = 0;
+      for (int value : A) {
+        if (currSum + value > mid) {
+          currSum = value;
+          splits++;
+          if (splits > K) break;
+        } else currSum += value;
       }
+      // splits < K is a valid solution when it's not possible to divide the array into K blocks where all
+      // K blocks have at least 1 element
+      if (splits <= K) {
+        minLargeSum = mid;
+        right = mid - 1;
+      } else left = mid + 1;
     }
     return minLargeSum;
   }
