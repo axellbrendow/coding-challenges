@@ -146,3 +146,10 @@ equations on the right side:
 T(n) * T(n - 1) * ... * T(n - (n - 3)) * T(2) * T(1)  =  2T(n - 1) * 2T(n - 2) * ... * 2T(n - (n - 3)) * T(2) * T(1)
 
 We can cut T(n - 1), T(n - 2) and many other calls to the T function. At the end, we'll have T(n) = 2^n
+
+---
+
+Check if triangle is valid:
+a + b > c
+a + c > b
+b + c > a
