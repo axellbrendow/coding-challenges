@@ -69,17 +69,17 @@ A[6] = 4 | 3 0 1 4 0 (maxCounter = 4, lastMaxCounter = 2)
 
 public class MaxCounters {
 
-  public static int[] solution(int N, int[] A) {
-    int[] counters = new int[N];
+  public static int[] solution(int numCounters, int[] operations) {
+    int[] counters = new int[numCounters];
     int maxCounter = 0;
     /** maxCounter at the last max counter operation */
     int lastMaxCounter = -1;
 
-    for (int i = 0; i < A.length; i++) {
-      if (A[i] == N + 1) { // max counter operation
+    for (int i = 0; i < operations.length; i++) {
+      if (operations[i] == numCounters + 1) { // max counter operation
         lastMaxCounter = maxCounter;
       } else { // increase operation
-        int counterIndex = A[i] - 1;
+        int counterIndex = operations[i] - 1;
         if (counters[counterIndex] < lastMaxCounter)
           counters[counterIndex] = lastMaxCounter + 1;
         else
