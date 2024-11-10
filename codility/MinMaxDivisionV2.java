@@ -88,7 +88,7 @@ If K = 3 and we try minimalLargeSum = 6, we'll get 2 divisions -> 5 | 3 (note th
 */
 
 class MinMaxDivisionV2 {
-  public static int solution(int K, int M, int[] A) {
+  public static int solution(int numBlocks, int maxElem, int[] A) {
     int maxValue = A[0], sum = 0;
     for (int value : A) {
       maxValue = Math.max(maxValue, value);
@@ -103,12 +103,12 @@ class MinMaxDivisionV2 {
         if (currSum + value > mid) {
           currSum = value;
           splits++;
-          if (splits > K) break;
+          if (splits > numBlocks) break;
         } else currSum += value;
       }
       // splits < K is a valid solution when it's not possible to divide the array into K blocks where all
       // K blocks have at least 1 element
-      if (splits <= K) {
+      if (splits <= numBlocks) {
         minLargeSum = mid;
         right = mid - 1;
       } else left = mid + 1;

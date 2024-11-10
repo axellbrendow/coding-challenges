@@ -50,11 +50,11 @@ second_elem / k - first_elem / k + 1
 */
 
 public class CountDiv {
-  public static int solution(int A, int B, int K) {
-    int firstElem = A % K != 0 ? K * (A / K) + K : A;
-    int lastElem = B % K != 0 ? K * (B / K) : B;
+  public static int solution(int start, int end, int divisor) {
+    int firstElem = start % divisor != 0 ? divisor * (start / divisor) + divisor : start;
+    int lastElem = end % divisor != 0 ? divisor * (end / divisor) : end;
     if (firstElem == lastElem) return 1;
-    else return lastElem / K - firstElem / K + 1;
+    else return lastElem / divisor - firstElem / divisor + 1;
   }
 
   public static void main(String[] args) {

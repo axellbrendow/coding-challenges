@@ -1,6 +1,8 @@
 package codility;
 
 /*-
+https://app.codility.com/programmers/lessons/10-prime_and_composite_numbers/min_perimeter_rectangle/
+
 An integer N is given, representing the area of some rectangle.
 
 The area of a rectangle whose sides are of length A and B is A * B, and the perimeter is 2 * (A + B).
@@ -50,9 +52,9 @@ B = N / A
 */
 
 public class MinPerimeterRectangle {
-  public static int solution(int N) {
-    for (int factor = (int) Math.sqrt(N); factor >= 1; factor--)
-      if (N % factor == 0) return 2 * (factor + N / factor);
+  public static int solution(int area) {
+    for (int side = (int) Math.sqrt(area); side >= 1; side--)
+      if (area % side == 0) return 2 * (side + area / side);
     throw new IllegalStateException("There must be a factor that is a side of the rectangle.");
   }
 

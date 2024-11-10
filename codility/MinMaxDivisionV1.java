@@ -73,11 +73,11 @@ K = 100_000 M = 10 A = [1] -> 1
 21
 18
 
-This code is wrong and only works for K = 3. But I liked the code anyway and I'll keep it.
+This code is wrong and only works for K = 3. But I liked the code anyway so I'll keep it.
 */
 
 class MinMaxDivisionV1 {
-  public static int solution(int K, int M, int[] A) {
+  public static int solution(int numBlocks, int maxElem, int[] A) {
     int[] prefixSum = new int[A.length];
     prefixSum[0] = A[0];
     for (int i = 1; i < A.length; i++) prefixSum[i] = prefixSum[i - 1] + A[i];

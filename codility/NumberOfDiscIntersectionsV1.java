@@ -65,10 +65,10 @@ public class NumberOfDiscIntersectionsV1 {
     }
   }
 
-  public static int solution(int[] A) {
+  public static int solution(int[] radiuses) {
     List<Circle> circles = new ArrayList<>();
-    for (int i = 0; i < A.length; i++) {
-      circles.add(new Circle((long) i - A[i], (long) i + A[i]));
+    for (int i = 0; i < radiuses.length; i++) {
+      circles.add(new Circle((long) i - radiuses[i], (long) i + radiuses[i])); // converts i to long before adding
     }
     circles.sort((circle1, circle2) -> {
       if (circle1.start < circle2.start || (circle1.start == circle2.start && circle1.end <= circle2.end))
@@ -77,9 +77,9 @@ public class NumberOfDiscIntersectionsV1 {
     });
 
     int pairs = 0;
-    for (int i = 0; i < A.length; i++) {
+    for (int i = 0; i < radiuses.length; i++) {
       Circle leftCircle = circles.get(i);
-      for (int j = i + 1; j < A.length; j++) {
+      for (int j = i + 1; j < radiuses.length; j++) {
         Circle rightCircle = circles.get(j);
         if (leftCircle.end >= rightCircle.start) pairs++;
         else break;

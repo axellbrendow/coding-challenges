@@ -62,19 +62,19 @@ o  o  o  c  o  c  o  c  c
 */
 
 public class NumberOfDiscIntersectionsV2 {
-  public static int solution(int[] A) {
-    long[] start = new long[A.length];
-    long[] end = new long[A.length];
-    for (int i = 0; i < A.length; i++) {
-      start[i] = (long) i - A[i];
-      end[i] = (long) i + A[i]; // converts i to long before adding
+  public static int solution(int[] radiuses) {
+    long[] start = new long[radiuses.length];
+    long[] end = new long[radiuses.length];
+    for (int i = 0; i < radiuses.length; i++) {
+      start[i] = (long) i - radiuses[i];
+      end[i] = (long) i + radiuses[i]; // converts i to long before adding
     }
     Arrays.sort(start);
     Arrays.sort(end);
 
     int pairs = 0, open = 0, i = 0;
-    for (int j = 0; j < A.length; j++) {
-      while (i < A.length && start[i] <= end[j]) {
+    for (int j = 0; j < radiuses.length; j++) {
+      while (i < radiuses.length && start[i] <= end[j]) {
         pairs += open++;
         if (pairs > 10_000_000) return -1;
         i++;

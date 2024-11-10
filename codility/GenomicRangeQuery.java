@@ -108,24 +108,24 @@ CAGCCTA
 */
 
 public class GenomicRangeQuery {
-  public static int[] solution(String S, int[] P, int[] Q) {
+  public static int[] solution(String dnaSequence, int[] queryStart, int[] queryEnd) {
     // prefix sum
-    int[] firstAToTheLeft = new int[S.length()];
+    int[] firstAToTheLeft = new int[dnaSequence.length()];
     Arrays.fill(firstAToTheLeft, -1);
 
-    int[] firstCToTheLeft = new int[S.length()];
+    int[] firstCToTheLeft = new int[dnaSequence.length()];
     Arrays.fill(firstCToTheLeft, -1);
 
-    int[] firstGToTheLeft = new int[S.length()];
+    int[] firstGToTheLeft = new int[dnaSequence.length()];
     Arrays.fill(firstGToTheLeft, -1);
 
-    for (int i = 0; i < S.length(); i++) {
+    for (int i = 0; i < dnaSequence.length(); i++) {
       if (i > 0) {
         firstAToTheLeft[i] = firstAToTheLeft[i - 1];
         firstCToTheLeft[i] = firstCToTheLeft[i - 1];
         firstGToTheLeft[i] = firstGToTheLeft[i - 1];
       }
-      switch (S.charAt(i)) {
+      switch (dnaSequence.charAt(i)) {
         case 'A':
           firstAToTheLeft[i] = i;
           break;
@@ -139,11 +139,11 @@ public class GenomicRangeQuery {
     }
 
     // running the queries
-    int[] output = new int[P.length];
-    for (int i = 0; i < P.length; i++) {
-      if (firstAToTheLeft[Q[i]] >= P[i]) output[i] = 1;
-      else if (firstCToTheLeft[Q[i]] >= P[i]) output[i] = 2;
-      else if (firstGToTheLeft[Q[i]] >= P[i]) output[i] = 3;
+    int[] output = new int[queryStart.length];
+    for (int i = 0; i < queryStart.length; i++) {
+      if (firstAToTheLeft[queryEnd[i]] >= queryStart[i]) output[i] = 1;
+      else if (firstCToTheLeft[queryEnd[i]] >= queryStart[i]) output[i] = 2;
+      else if (firstGToTheLeft[queryEnd[i]] >= queryStart[i]) output[i] = 3;
       else output[i] = 4;
     }
     return output;

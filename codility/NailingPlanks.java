@@ -83,14 +83,14 @@ public class NailingPlanks {
     }
   }
 
-  public static int solution(int[] A, int[] B, int[] C) {
+  public static int solution(int[] plankStart, int[] plankEnd, int[] nailPositions) {
     List<Nail> nails = new ArrayList<>();
-    for (int i = 0; i < C.length; i++) nails.add(new Nail(C[i], i));
+    for (int i = 0; i < nailPositions.length; i++) nails.add(new Nail(nailPositions[i], i));
     nails.sort((nail1, nail2) -> nail1.pos - nail2.pos);
 
     int maxNailIndex = 0;
-    for (int i = 0; i < A.length; i++) {
-      int bestNailIndex = findBestNail(A[i], B[i], nails, maxNailIndex);
+    for (int i = 0; i < plankStart.length; i++) {
+      int bestNailIndex = findBestNail(plankStart[i], plankEnd[i], nails, maxNailIndex);
       if (bestNailIndex == -1) return -1;
       maxNailIndex = Math.max(maxNailIndex, bestNailIndex);
     }

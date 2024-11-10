@@ -64,12 +64,12 @@ each element of array A is an integer within the range [1..1,000,000,000].
 */
 
 class TieRopes {
-  public static int solution(int K, int[] A) {
+  public static int solution(int minRopeLength, int[] ropeLengths) {
     int ropes = 0;
     long sum = 0;
-    for (int value : A) {
-      sum += value;
-      if (sum >= K) {
+    for (int ropeLength : ropeLengths) {
+      sum += ropeLength;
+      if (sum >= minRopeLength) {
         ropes++;
         sum = 0;
       }

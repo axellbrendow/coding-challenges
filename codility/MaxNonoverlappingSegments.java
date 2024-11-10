@@ -114,11 +114,11 @@ result = 3
 */
 
 public class MaxNonoverlappingSegments {
-  public static int solution(int[] A, int[] B) {
-    if (A.length == 0) return 0;
+  public static int solution(int[] start, int[] end) {
+    if (start.length == 0) return 0;
     int lastSegment = 0, maxSegments = 1;
-    for (int i = 1; i < B.length; i++) {
-      if (A[i] > B[lastSegment]) {
+    for (int i = 1; i < end.length; i++) {
+      if (start[i] > end[lastSegment]) {
         lastSegment = i;
         maxSegments++;
       }
