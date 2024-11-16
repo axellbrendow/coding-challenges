@@ -113,7 +113,7 @@ public class FlagsV2 {
       else nextPeak[i] = nextPeak[i + 1];
     nextPeak[0] = nextPeak[1];
 
-    int flagsToTry = 1, result = 0;
+    int flagsToTry = 1, maxFlags = 0;
     while (H.length > flagsToTry * (flagsToTry - 1)) {
       int peak = 0, placedFlags = 0;
       while (peak < H.length && placedFlags < flagsToTry) {
@@ -122,10 +122,10 @@ public class FlagsV2 {
         placedFlags++;
         peak += flagsToTry;
       }
-      result = Math.max(result, placedFlags);
+      maxFlags = Math.max(maxFlags, placedFlags);
       flagsToTry++;
     }
-    return result;
+    return maxFlags;
   }
 
   public static void main(String[] args) {

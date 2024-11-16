@@ -90,15 +90,15 @@ public class FlagsV1 {
     for (int i = 1; i < H.length - 1; i++)
       peaks[i] = H[i - 1] < H[i] && H[i] > H[i + 1];
 
-    int minFlags = 1, maxFlags = peaks.length, solution = 0;
+    int minFlags = 1, maxFlags = peaks.length, maxFlagsSolution = 0;
     while (minFlags <= maxFlags) {
       int flags = minFlags + (maxFlags - minFlags) / 2;
       if (canPlaceFlags(flags, peaks)) {
-        solution = flags;
+        maxFlagsSolution = flags;
         minFlags = flags + 1;
       } else maxFlags = flags - 1;
     }
-    return solution;
+    return maxFlagsSolution;
   }
 
   public static void main(String[] args) {
