@@ -33,7 +33,14 @@ You are going on a trip to a range of mountains whose relative heights are repre
 in a figure below. You have to choose how many flags you should take with you. The goal is to set the maximum
 number of flags on the peaks, according to certain rules.
 
-
+6                               ^   
+5    ^                              
+4          ^     ^           /      
+3       \/    \/          /         
+2                      /           \
+1 /                 \/              
+0                                   
+  0  1  2  3  4  5  6  7  8  9 10 11
 
 Flags can only be set on peaks. What's more, if you take K flags, then the distance between any two flags
 should be greater than or equal to K. The distance between indices P and Q is the absolute value |P − Q|.
