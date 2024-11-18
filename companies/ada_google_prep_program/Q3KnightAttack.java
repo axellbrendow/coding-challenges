@@ -61,15 +61,15 @@ Output: 1
 B: Black
 W: White
 K: Knight
-P: Pawn
+O: Opponent
 
    0   1   2   3   4   5   6   7
 0  B   W   B   W   B   W   B   W
 1  W   B   W   B   W   B   W   B
 2  B   W   B   W   B   W   B   W
 3  W   B  *K*  B   W   B   W   B
-4  B   W   B   W   B  *P*  B   W
-5  W  *P*  W   B  *P*  B   W   B
+4  B   W   B   W   B  |O|  B   W
+5  W  |O|  W   B  |O|  B   W   B
 6  B   W   B   W   B   W   B   W
 7  W   B   W   B   W   B   W   B
 
@@ -126,8 +126,8 @@ public class Q3KnightAttack {
     1  W   B   W   B   W   B   W   B
     2  B   W   B   W   B   W   B   W
     3  W   B  *K*  B   W   B   W   B
-    4  B   W   B   W   B  *P*  B   W
-    5  W  *P*  W   B  *P*  B   W   B
+    4  B   W   B   W   B  |O|  B   W
+    5  W  |O|  W   B  |O|  B   W   B
     6  B   W   B   W   B   W   B   W
     7  W   B   W   B   W   B   W   B
     */
@@ -136,15 +136,18 @@ public class Q3KnightAttack {
     /*-
        0   1   2   3   4   5   6
     0  W   B   W   B   W   B   W
-    1  B   W  |B|  W  |B|  W   B
-    2  W  |B|  W   B   W  |B|  W
+    1  B   W  |O|  W  |O|  W   B
+    2  W  |O|  W   B   W  |O|  W
     3  B   W   B  *K*  B   W   B
-    4  W  |B|  W   B   W  |B|  W
-    5  B   W  |B|  W  |B|  W   B
+    4  W  |O|  W   B   W  |O|  W
+    5  B   W  |O|  W  |O|  W   B
     6  W   B   W   B   W   B   W
     */
     assert knightAttack(
-      8, new int[]{3, 3}, new int[][]{{2, 1}, {1, 2}, {1, 4}, {2, 5}, {4, 5}, {5, 4}, {5, 2}, {4, 1}}, 9
+      8,
+      new int[]{3, 3},
+      new int[][]{{2, 1}, {1, 2}, {1, 4}, {2, 5}, {4, 5}, {5, 4}, {5, 2}, {4, 1}, {7, 7}},
+      9
     ) == 5;
   }
 }
