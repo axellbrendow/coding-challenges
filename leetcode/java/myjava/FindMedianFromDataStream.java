@@ -1,7 +1,6 @@
 package myjava;
 
 import java.util.*;
-import java.util.stream.*;
 
 class MedianFinder {
   private Queue<Integer> smallestValues = new PriorityQueue<>(Comparator.reverseOrder());
@@ -35,6 +34,6 @@ public class FindMedianFromDataStream {
     medianFinder.addNum(2);
     assert medianFinder.findMedian() == (1 + 2) / 2.0;
     medianFinder.addNum(3);
-    assert medianFinder.findMedian() == 2.0;
+    assert medianFinder.findMedian() == (1 + 2 + 3) / 3.0;
   }
 }
