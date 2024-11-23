@@ -3,13 +3,6 @@ import java.util.concurrent.*;
 import java.util.concurrent.atomic.*;
 
 public class Main {
-  private static void sleep(int millis) {
-    try {
-      Thread.sleep(millis);
-    } catch (InterruptedException e) {
-    }
-  }
-
   public static void main(String[] args) throws Exception {
     System.out.println();
     System.out.println(">>> ༼ つ ◕_◕ ༽つ concurrency, threads, locks");
@@ -115,5 +108,12 @@ public class Main {
     consumerThread2.join();
     producerThread1.join();
     producerThread2.join();
+  }
+
+  private static void sleep(int millis) {
+    try {
+      Thread.sleep(millis);
+    } catch (InterruptedException e) {
+    }
   }
 }

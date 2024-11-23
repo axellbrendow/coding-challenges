@@ -108,10 +108,10 @@ func (c commissionRate20) Description() string { return "20% commission rate" }
 func main() {
 	reportRunner := report_runner_v2.New(
 		[]report_runner_v2.CommissionRate{
+			commissionRate20{},
 			commissionRate10{},
 			commissionRate15{},
 			commissionRate18{},
-			commissionRate20{},
 		},
 		[]report_runner_v2.Account{
 			{AccountID: "A001", DaysPastDue: 29},

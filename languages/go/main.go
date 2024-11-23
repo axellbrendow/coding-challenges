@@ -631,7 +631,7 @@ type MyStack struct {
 	count                 int
 }
 
-func (myStack *MyStack) Size() int { return myStack.count } // Overring MyCountableCollection.Size()
+func (myStack *MyStack) Size() int { return myStack.count } // Overriding MyCountableCollection.Size()
 
 // RELATED TO:
 // enums https://pkg.go.dev/syscall#SIGABRT https://gobyexample.com/enums

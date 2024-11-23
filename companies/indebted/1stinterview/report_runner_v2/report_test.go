@@ -84,10 +84,10 @@ func TestReportRunner_Run(t *testing.T) {
 			name: "test 1",
 			fields: fields{
 				commissionRates: []CommissionRate{
+					commissionRate20{},
 					commissionRate10{},
 					commissionRate15{},
 					commissionRate18{},
-					commissionRate20{},
 				},
 				accounts: []Account{
 					{AccountID: "A001", DaysPastDue: 29},
