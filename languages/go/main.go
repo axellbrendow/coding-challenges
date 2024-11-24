@@ -66,6 +66,7 @@ uintptr, *T, unsafe.Pointer
 	fmt.Println(">>> ༼ つ ◕_◕ ༽つ strings, indexOf, cmp, replace, split, concat, lower, upper, template strings, unicode")
 	fmt.Println()
 
+	fmt.Println(`strings.Repeat("a", 3)`, strings.Repeat("a", 3))
 	fmt.Println(`strings.Index("abcd", "bc")`, strings.Index("abcd", "bc"))
 	fmt.Println(`strings.LastIndex("aaa", "a")`, strings.LastIndex("aaa", "a"))
 	fmt.Println(`strings.Compare("abcd", "abc")`, strings.Compare("abcd", "abc"))
@@ -539,6 +540,9 @@ func MyCmp[E comparable](v1, v2 E) int {
 	fmt.Println("Num of CPUs:", runtime.NumCPU())
 	runtime.GOMAXPROCS(runtime.NumCPU())
 
+	// https://go101.org/article/channel.html
+	// make(chan type (required), buffer length (unbounded by default))
+	// `chan <- value` blocks if buffer is full.
 	valuesChan := make(chan int)
 	count := 5
 	for i := 0; i < count; i++ { // Starting from Go 1.22, each iteration declares a new i variable
@@ -562,9 +566,16 @@ func MyCmp[E comparable](v1, v2 E) int {
 			case <-timeout:
 				fmt.Println("TIMEOUT")
 				return
+				// default: // Can be used to avoid blocking
+				// 	time.Sleep(50 * time.Millisecond)
 			}
 		}
 	}()
+
+	// Close a channel if you need to communicate to others goroutines that all data has been sent
+	close(valuesChan)
+	// `value, ok := <-channel` ok is false if there are no more values to receive and the channel is closed.
+	// The loop for i := range c receives values from the channel repeatedly until it is closed.
 
 	fmt.Println()
 	fmt.Println(">>> ༼ つ ◕_◕ ༽つ How to create projects/modules/packages https://go.dev/doc/tutorial/create-module")
@@ -636,21 +647,26 @@ func (myStack *MyStack) Size() int { return myStack.count } // Overriding MyCoun
 // RELATED TO:
 // enums https://pkg.go.dev/syscall#SIGABRT https://gobyexample.com/enums
 
+// Enum example from enclave markets including JSON parsing: https://github.com/Enclave-Markets/enclave-go/blob/7a7c86080463161e3bc433e557a1ea1f089b85ac/models/orders.go#L212
+
 type Size int
 
 const ( // iota is set to 0 whenever the const keyword appears in the code
-	// SMALL Size = iota + 1
+	// SIZE_UNKNOWN Size = iota
+	// SMALL
 	// MEDIUM
 	// LARGE
-	SMALL  = Size(1)
-	MEDIUM = Size(2)
-	LARGE  = Size(3)
+	SIZE_UNKNOWN = Size(0)
+	SMALL        = Size(1)
+	MEDIUM       = Size(2)
+	LARGE        = Size(3)
 )
 
 var sizeNames = map[Size]string{
-	SMALL:  "SMALL",
-	MEDIUM: "MEDIUM",
-	LARGE:  "LARGE",
+	SIZE_UNKNOWN: "SIZE_UNKNOWN",
+	SMALL:        "SMALL",
+	MEDIUM:       "MEDIUM",
+	LARGE:        "LARGE",
 }
 
 func (size Size) String() string {
