@@ -36,6 +36,15 @@ func TestNew(t *testing.T) {
 	}
 }
 
+type weirdCommissionRate struct{}
+
+func (c weirdCommissionRate) AppliesFor(account Account) bool {
+	return account.DaysPastDue%2 == 0
+}
+func (c weirdCommissionRate) Description() string { return "11% commission rate" }
+
+//
+
 type commissionRate10 struct{}
 
 func (c commissionRate10) AppliesFor(account Account) bool {
@@ -88,6 +97,7 @@ func TestReportRunner_Run(t *testing.T) {
 					commissionRate10{},
 					commissionRate15{},
 					commissionRate18{},
+					weirdCommissionRate{},
 				},
 				accounts: []Account{
 					{AccountID: "A001", DaysPastDue: 29},

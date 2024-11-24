@@ -18,21 +18,21 @@ var commissionRateDescriptions = []string{
 }
 
 func Run(accounts []Account) []Result {
-	commisionRateMap := map[string]int{}
+	commissionRateMap := map[string]int{}
 	for _, account := range accounts {
 		if account.DaysPastDue < 30 {
-			commisionRateMap["10% commission rate"]++
+			commissionRateMap["10% commission rate"]++
 		} else if account.DaysPastDue <= 90 {
-			commisionRateMap["15% commission rate"]++
+			commissionRateMap["15% commission rate"]++
 		} else if account.DaysPastDue <= 120 {
-			commisionRateMap["18% commission rate"]++
+			commissionRateMap["18% commission rate"]++
 		} else {
-			commisionRateMap["20% commission rate"]++
+			commissionRateMap["20% commission rate"]++
 		}
 	}
 	results := []Result{}
 	for _, description := range commissionRateDescriptions {
-		count, exists := commisionRateMap[description]
+		count, exists := commissionRateMap[description]
 		if exists {
 			results = append(results, Result{Description: description, Count: count})
 		}

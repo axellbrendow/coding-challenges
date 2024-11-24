@@ -33,6 +33,7 @@ func (reportRunner *ReportRunner) Run() []Result {
 		for _, commissionRate := range reportRunner.commissionRates {
 			if commissionRate.AppliesFor(account) {
 				commissionRateMap[commissionRate.Description()]++
+				break
 			}
 		}
 	}
