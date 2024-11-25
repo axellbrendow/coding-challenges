@@ -47,7 +47,7 @@ func main() {
 	fmt.Printf("|%09.2f|\n", 7.655) // width 9, precision 2, prints -> |000007.66|
 
 	fmt.Println()
-	fmt.Println(">>> ༼ つ ◕_◕ ༽つ all primitive types")
+	fmt.Println(">>> ༼ つ ◕_◕ ༽つ all primitive types, casting, type assertions, instanceof")
 	fmt.Println()
 
 	fmt.Printf(`bool, uint8, int8, byte
@@ -60,7 +60,22 @@ float64
 complex64
 complex128
 uintptr, *T, unsafe.Pointer
-%v:%T`, 1-0.707i, 1-0.707i)
+%v:%T`, 1-0.707i, 1-0.707i) // (1-0.707i):complex1284
+
+	fmt.Println()
+
+	floatValue := 4.5
+	// cast
+	fmt.Println(int(floatValue)) // 4
+
+	// type assertion
+	var intValue any = 1
+	fmt.Println(intValue.(int)) // 1
+	// instanceof
+	_, ok := intValue.(float64)
+	if !ok { // !ok is true in this case
+		fmt.Println("int.(float64) failed")
+	}
 
 	fmt.Println()
 	fmt.Println(">>> ༼ つ ◕_◕ ༽つ strings, indexOf, cmp, replace, split, concat, lower, upper, template strings, unicode")
@@ -86,17 +101,21 @@ uintptr, *T, unsafe.Pointer
 	fmt.Println(`strings.ToUpper("ããã")`, strings.ToUpper("ããã"))
 	fmt.Println(`strings.ToLower("ÃÃÃ")`, strings.ToLower("ÃÃÃ"))
 
-	msg := fmt.Sprintf("Hi, %v", "Axell")
-	fmt.Println(`"Hi, %v", "Axell" ->`, msg)
+	fmt.Println(`Characters, Symbols, UTF8 and the Unicode Miracle - Computerphile
+https://www.youtube.com/watch?v=MijmeoH9LT4&ab_channel=Computerphile
+UTF-8 is variable 1 to 6 bytes.
+UTF-16 is variable 2 or 4 bytes.
+UTF-32 is fixed 4 bytes.`)
+	fmt.Println(`"本".Length ->`, len("本"), "(the length is based on UTF-8)") // 3
+	fmt.Println(`"👋".Length ->`, len("👋"))                                   // 4
 
-	fmt.Println(`for pos, char := range "日本語"`)
-	for pos, char := range "日本語" {
+	fmt.Println(`for pos, char := range "日👋本語"`)
+	for pos, char := range "日👋本語" {
 		fmt.Printf("character %c starts at byte position %d\n", char, pos)
-		/*
-			character 日 starts at byte position 0
-			character 本 starts at byte position 3
-			character 語 starts at byte position 6
-		*/
+		// character 日 starts at byte position 0
+		// character 👋 starts at byte position 3
+		// character 本 starts at byte position 7
+		// character 語 starts at byte position 10
 	}
 
 	fmt.Println()
@@ -164,7 +183,7 @@ mul_op     = "*" | "/" | "%" | "<<" | ">>" | "&" | "&^" .`)
 	}
 
 	fmt.Println()
-	fmt.Println(">>> ༼ つ ◕_◕ ༽つ date types (sum/subtract, convert from and to unix epoch, parse strings)")
+	fmt.Println(">>> ༼ つ ◕_◕ ༽つ date types (sum/subtract, convert from and to unix epoch, parse strings, ISO 8601/RFC 3339)")
 	fmt.Println()
 
 	now := time.Now()
