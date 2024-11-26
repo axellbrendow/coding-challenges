@@ -22,6 +22,7 @@ import (
 /*
 Must-read for Go programmers: "Effective Go" https://go.dev/doc/effective_go.html
 Go specification: https://go.dev/ref/spec
+The Go Memory Model: https://go.dev/ref/mem
 */
 
 func main() {
