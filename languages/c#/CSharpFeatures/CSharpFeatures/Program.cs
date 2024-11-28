@@ -1,6 +1,10 @@
 ﻿using System.Collections;
+using System.Data.SQLite;
 using System.Diagnostics;
 using System.Text;
+using System.Text.Json;
+using System.Text.Json.Serialization;
+using System.Text.RegularExpressions;
 
 namespace CSharpFeatures;
 
@@ -16,7 +20,7 @@ internal static class Program // internal is the default access modifier for cla
     // private is the default access modifier for fields
     private static readonly DateTime ThisDate = DateTime.Now;
 
-    static void Main(string[] args)
+    public static async Task Main(string[] args)
     {
         Console.OutputEncoding = System.Text.Encoding.UTF8;
 
@@ -412,9 +416,53 @@ class AbstractChild : AbstractParent
         Console.WriteLine(">>> ༼ つ ◕_◕ ༽つ json parsing");
         Console.WriteLine();
 
+        Debug.Assert(15 == await GetMoviesContainingTitle("ab"));
+
+        /*
+        queue/messaging service, queues, files, async/sync, tratamento de erros, update sem where com pk, sql injection
+        estudar c#, dapper, entity framework
+        System.Data.SqlClient
+        Dapper ou Entity
+        File
+        JsonSerializer
+
+        MessagingService, lê arquivo mas não trata exceção not found, sql injection, dependency injection,
+        métodos grandes, variáveis com nome ruim, select for update com where errado, utilizar ORM invés de sql puro ?
+        class vs record, tratamento de erro, estudar JDBC
+        */
+
         Console.WriteLine();
         Console.WriteLine(">>> ༼ つ ◕_◕ ༽つ regex and groups");
         Console.WriteLine();
+
+        var compiledRegex = new Regex(""".*"total":(?<total>\d+).*""", RegexOptions.Compiled);
+
+        const string testString1 = """{"total":7}""";
+        Console.WriteLine(
+            $"Regex.IsMatch(`{testString1}`) -> {compiledRegex.IsMatch(testString1)}"
+        );
+
+        var match1 = compiledRegex.Match(testString1);
+        if (match1.Success)
+        {
+            Console.WriteLine("Matched groups:");
+            foreach (var groupName in compiledRegex.GetGroupNames())
+            {
+                Console.WriteLine($"  {groupName}: {match1.Groups[groupName].Value}");
+            }
+        }
+        else
+        {
+            Console.WriteLine("No match found.");
+        }
+
+        Console.WriteLine("Group names:");
+        Console.WriteLine(string.Join(", ", compiledRegex.GetGroupNames()));
+
+        // Test a string that does not match
+        const string testString2 = @"{""total:7}";
+        var match2 = compiledRegex.Match(testString2);
+        Console.WriteLine("Matching `{\"total:7}` -> " + (match2.Success ? "Match found" : "No match"));
 
         Console.WriteLine();
         Console.WriteLine(">>> ༼ つ ◕_◕ ༽つ hashing functions");
@@ -423,6 +471,25 @@ class AbstractChild : AbstractParent
         Console.WriteLine();
         Console.WriteLine(">>> ༼ つ ◕_◕ ༽つ file api");
         Console.WriteLine();
+
+        const string filePath = "myfile.txt";
+        await File.WriteAllTextAsync(
+            filePath,
+            """
+            fileline1
+            fileline2
+            fileline3
+            """
+        );
+
+        Console.WriteLine($"File created {filePath}");
+
+        Console.WriteLine("Inserting 3 lines in the file:");
+        await ReadAndPrintFileAsync(filePath);
+
+        Console.WriteLine($"File deleted {filePath}");
+
+        File.Delete(filePath);
 
         Console.WriteLine();
         Console.WriteLine(">>> ༼ つ ◕_◕ ༽つ timers, sleep");
@@ -452,8 +519,96 @@ class AbstractChild : AbstractParent
         Console.WriteLine(">>> ༼ つ ◕_◕ ༽つ access sqlite/mysql/postgres database avoiding sql injection");
         Console.WriteLine();
 
+        const string databasePath = "example.db";
+        const string connectionString = $"Data Source={databasePath};Version=3;New=False;";
+
+        SQLiteConnection.CreateFile(databasePath);
+        Console.WriteLine($"Database created at {databasePath}");
+
+        await using (var connection = new SQLiteConnection(connectionString))
+        {
+            connection.Open();
+
+            const string createTableQuery = @"
+CREATE TABLE IF NOT EXISTS Users (
+    Id INTEGER PRIMARY KEY AUTOINCREMENT,
+    Name TEXT NOT NULL,
+    Age INTEGER NOT NULL
+);";
+
+            await using (var createTableCommand = new SQLiteCommand(createTableQuery, connection))
+            {
+                createTableCommand.ExecuteNonQuery();
+                Console.WriteLine("Table 'Users' created successfully.");
+            }
+
+            const string insertQuery = "INSERT INTO Users (Name, Age) VALUES (@name, @age);";
+
+            await using (var insertCommand = new SQLiteCommand(insertQuery, connection))
+            {
+                insertCommand.Parameters.AddWithValue("@name", "Alice");
+                insertCommand.Parameters.AddWithValue("@age", 30);
+
+                var rowsAffected = insertCommand.ExecuteNonQuery();
+                Console.WriteLine($"{rowsAffected} record(s) inserted successfully.");
+            }
+        }
+
         Console.WriteLine();
         Console.WriteLine(">>> ༼ つ ◕_◕ ༽つ create an http server");
         Console.WriteLine();
     }
+
+    private static async Task ReadAndPrintFileAsync(string filePath)
+    {
+        if (!File.Exists(filePath)) throw new FileNotFoundException(filePath);
+
+        // return File.ReadAllText(filePath); // Sync version to read everything
+
+        using StreamReader reader = new StreamReader(filePath);
+
+        string? line;
+        // Remove await and Async and you'll get the synchronous version
+        while ((line = await reader.ReadLineAsync()) != null)
+        {
+            Console.WriteLine(line);
+        }
+    }
+
+    private static async Task<int> GetMoviesContainingTitle(string title)
+    {
+        var url = $"https://jsonmock.hackerrank.com/api/moviesdata/search/?Title={title}";
+        using var client = new HttpClient();
+        using var response = await client.GetAsync(url);
+        response.EnsureSuccessStatusCode(); // throws exception if status code is outside the range [200,299] 
+        var jsonResponse = await response.Content.ReadAsStringAsync();
+        var parsedResponse = JsonSerializer.Deserialize<MovieSearchResponse>(jsonResponse)!;
+
+        Console.WriteLine(
+            JsonSerializer.Serialize(
+                parsedResponse,
+                new JsonSerializerOptions
+                {
+                    WriteIndented = true,
+                })
+        );
+
+        return parsedResponse.Total;
+    }
+}
+
+public class Movie
+{
+    [JsonPropertyName("Title")] public string Title { get; set; }
+    [JsonPropertyName("Year")] public int Year { get; set; }
+    [JsonPropertyName("imdbID")] public string ImdbID { get; set; }
+}
+
+public class MovieSearchResponse
+{
+    [JsonPropertyName("page")] public int Page { get; set; }
+    [JsonPropertyName("per_page")] public int PerPage { get; set; }
+    [JsonPropertyName("total")] public int Total { get; set; }
+    [JsonPropertyName("total_pages")] public int TotalPages { get; set; }
+    [JsonPropertyName("data")] public List<Movie> Data { get; set; }
 }
