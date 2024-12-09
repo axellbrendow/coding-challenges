@@ -23,6 +23,9 @@ import (
 Must-read for Go programmers: "Effective Go" https://go.dev/doc/effective_go.html
 Go specification: https://go.dev/ref/spec
 The Go Memory Model: https://go.dev/ref/mem
+
+To delete all downloaded modules on your local disk:
+sudo rm -rf $(go env GOMODCACHE)
 */
 
 func main() {
@@ -564,38 +567,41 @@ func MyCmp[E comparable](v1, v2 E) int {
 	// make(chan type (required), buffer length (unbounded by default))
 	// `chan <- value` blocks if buffer is full.
 	valuesChan := make(chan int)
+	timeoutChan := make(chan any)
+	time.AfterFunc(time.Millisecond*400, func() { close(timeoutChan) })
 	count := 5
 	for i := 0; i < count; i++ { // Starting from Go 1.22, each iteration declares a new i variable
 		// A closure is a function value that references variables from outside its body
 		// Go closures capture variables by reference
 		go func() {
-			delay := rand.Intn(500) // [0, 500)
-			time.Sleep(time.Millisecond * time.Duration(delay))
+			select {
+			case <-time.After(time.Millisecond * time.Duration(rand.Intn(501))):
+				valuesChan <- i
+			case <-timeoutChan:
+				break
+			}
 			// fmt.Println(&i) // shows a different value at each iteration
-			valuesChan <- i
 		}()
 	}
 
-	timeout := time.After(time.Duration(400) * time.Millisecond)
-
-	func() {
-		for i := 0; i < count; i++ {
-			select { // "select" matches "send to / receive from channel" operations https://go.dev/ref/spec#Select_statements
-			case value := <-valuesChan:
-				fmt.Println(value)
-			case <-timeout:
-				fmt.Println("TIMEOUT")
-				return
-				// default: // Can be used to avoid blocking
-				// 	time.Sleep(50 * time.Millisecond)
-			}
+	for i := 0; i < count; i++ {
+		select { // "select" matches "send to / receive from channel" operations https://go.dev/ref/spec#Select_statements
+		case value := <-valuesChan:
+			fmt.Println(value)
+		case <-timeoutChan:
+			fmt.Println("timeout")
+			// default: // Can be used to avoid blocking
+			// 	time.Sleep(50 * time.Millisecond)
 		}
-	}()
+	}
 
 	// Close a channel if you need to communicate to others goroutines that all data has been sent
 	close(valuesChan)
 	// `value, ok := <-channel` ok is false if there are no more values to receive and the channel is closed.
 	// The loop for i := range c receives values from the channel repeatedly until it is closed.
+
+	// adding the "<-" before the chan type makes it readonly
+	// type ReadOnlyChan <-chan int
 
 	fmt.Println()
 	fmt.Println(">>> ༼ つ ◕_◕ ༽つ How to create projects/modules/packages https://go.dev/doc/tutorial/create-module")
