@@ -1,5 +1,5 @@
 /*-
-I got this question from Daiane Galvão in the group #devnagringa
+I got this question from another person
 
 Create an algorithm to simulate the execution of a traffic light.
 
@@ -99,7 +99,7 @@ setTimeout(() => {
   console.assert(semaphore.getColor() === "green", `${assertCount++}`); // green for 4 seconds
 }, 3990);
 
-// I need to add/remove 10ms because timers are not 100% accurate in nodejs
+// I need to add/remove 10ms because timers are not 100% accurate
 
 setTimeout(() => {
   console.assert(semaphore.getColor() === "yellow", `${assertCount++}`); // yellow for 1 second
