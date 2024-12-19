@@ -78,7 +78,7 @@ The 2 teams (1, 3) and (3, 4) know all 5 topics which is maximal.
 */
 
 public class AcmIcpcTeam {
-  private static int getNumOfTopics(String attendee1Topics, String attendee2Topics) {
+  private static int joinAndCountTopics(String attendee1Topics, String attendee2Topics) {
     int numTopics = 0;
     for (int i = 0; i < attendee1Topics.length(); i++)
       if (attendee1Topics.charAt(i) == '1' || attendee2Topics.charAt(i) == '1')
@@ -88,15 +88,16 @@ public class AcmIcpcTeam {
 
   public static List<Integer> acmTeam(List<String> attendeeTopics) {
     int numAttendees = attendeeTopics.size(), maxKnownTopics = 0;
-    Map<Integer, Integer> numTopicsToNumTeams = new HashMap<>();
+    Map<Integer, Integer> numTeamsPerNumTopics = new HashMap<>();
     for (int i = 0; i < numAttendees; i++) {
       for (int j = i + 1; j < numAttendees; j++) {
-        int teamNumTopics = getNumOfTopics(attendeeTopics.get(i), attendeeTopics.get(j));
-        maxKnownTopics = Math.max(maxKnownTopics, teamNumTopics);
-        numTopicsToNumTeams.put(teamNumTopics, 1 + numTopicsToNumTeams.getOrDefault(teamNumTopics, 0));
+        int numTopicsAfterJoin = joinAndCountTopics(attendeeTopics.get(i), attendeeTopics.get(j));
+        maxKnownTopics = Math.max(maxKnownTopics, numTopicsAfterJoin);
+        int oldNumTeams = numTeamsPerNumTopics.getOrDefault(numTopicsAfterJoin, 0);
+        numTeamsPerNumTopics.put(numTopicsAfterJoin, 1 + oldNumTeams);
       }
     }
-    return List.of(maxKnownTopics, numTopicsToNumTeams.get(maxKnownTopics));
+    return List.of(maxKnownTopics, numTeamsPerNumTopics.get(maxKnownTopics));
   }
 
   public static void main(String[] args) {
